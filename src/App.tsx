@@ -10,10 +10,22 @@ interface Todoitem {
 }
 
 function App() {
+
   const [userInput, setUserInput] = useState("")
   const [listItems, setListItems] = useState<Todoitem[]>([])
 
-  const addtodoitem = () => {
+  document.addEventListener('keydown', (event) => {
+    switch(event.key) {
+      case 'Escape':
+        setListItems([]);
+      default:
+        break;
+    }
+  })
+
+  const addtodoitem = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (userInput === "") {
       return;
     }
@@ -42,10 +54,13 @@ function App() {
 
   return (
     <div className="App">
-     <h1>My To-Do List</h1>
+     <h1>Grocery List</h1>
      <div>
-      <input type={"text"} placeholder={"What would you like to do?"} value={userInput} onChange={(event)=>setUserInput(event.currentTarget.value)}/>
-      <p><button onClick={addtodoitem}>Add Your Item</button></p>
+      <form onSubmit={e => addtodoitem(e)}>
+        <input type={"text"} placeholder={"What would you like?"} value={userInput} onChange={(event)=>setUserInput(event.currentTarget.value)}/>
+        <p><button type="submit">Add Your Item</button></p>
+      </form>
+      <p><button onClick={() => setListItems([])}>Clear List</button></p>
      </div>
      <div>
       {listItems.map((item: Todoitem) => 
@@ -56,6 +71,7 @@ function App() {
       </p>)}
      </div>
     </div>  
+    
   )
 }
 
