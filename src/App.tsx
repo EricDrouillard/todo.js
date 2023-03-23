@@ -29,12 +29,12 @@ function App() {
     setUserInput("") // clear the user input
   }
 
-  const markDone = (clickedItemId: string) => {
+  const toggleDone = (clickedItemId: string) => {
     // 2. we want to update a single item that user has clicked to be done
     // 3. done means `item.Done = true`
-    setListItems(existingItems => existingItems.map(existingItem => { // visit an item in the array
+    setListItems(listItems.map(existingItem => { // visit an item in the array
       if (existingItem.Id === clickedItemId) { // we only care about the item that was clicked
-        existingItem.Done = true; // set the 'Done' property to the value 'true'
+        existingItem.Done = !existingItem.Done; // set the 'Done' property to the value 'true'
       }
       return existingItem; // return that item to the position in the array
     }));
@@ -49,7 +49,7 @@ function App() {
      </div>
      <div>
       {listItems.map((item: Todoitem) => 
-      <p onClick={()=> markDone(item.Id)} key={item.Id}>
+      <p onClick={()=> toggleDone(item.Id)} key={item.Id}>
         {item.Done ? // inline if statement, a ternary
           <span style={{textDecoration: 'line-through'}}>{item.Name}</span> : 
           item.Name}
